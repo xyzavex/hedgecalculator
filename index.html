@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hedge Calculator</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 1rem; color: #222; }
+  h1 { font-size: 1.4rem; }
+  form { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1rem; align-items: center; max-width: 520px; }
+  form button { grid-column: 1 / -1; justify-self: start; padding: .4rem 1.2rem; }
+  input[type=number] { width: 8rem; }
+  .hint { color: #666; font-size: .85rem; }
+  #status { margin: 1rem 0; min-height: 1.2em; }
+  #status.error { color: #b00020; }
+  table { border-collapse: collapse; margin-bottom: 1rem; }
+  th, td { border: 1px solid #ccc; padding: .3rem .7rem; text-align: left; }
+  td.num { font-variant-numeric: tabular-nums; }
+  .swatch { display: inline-block; width: .8em; height: .8em; border-radius: 50%; margin-right: .4em; opacity: .6; vertical-align: -1px; }
+  #map { max-width: 100%; border: 1px solid #000; display: block; }
+</style>
+</head>
+<body>
+<h1>Hedge Calculator</h1>
+<p>Calculates the best hedge (in terms of average score) for a set of locations in GeoGuessr.
+  Upload a map JSON exported by the community tools (the <code>customCoordinates</code> format).
+  Everything runs in your browser; the file is not uploaded anywhere.</p>
+
+<form id="form">
+  <label for="file">Locations JSON</label>
+  <input type="file" id="file" accept=".json,application/json" required>
+  <label for="maxdist">MAX_DIST (km)</label>
+  <span><input type="number" id="maxdist" min="1" step="any" placeholder="17502"> <span class="hint">default 17502</span></span>
+  <label for="nseeds">n_seeds</label>
+  <span><input type="number" id="nseeds" min="1" step="1" placeholder="100"> <span class="hint">default 100</span></span>
+  <button type="submit" id="run">Run</button>
+</form>
+
+<div id="status"></div>
+
+<div id="results" hidden>
+  <table>
+    <thead><tr><th></th><th>Latitude</th><th>Longitude</th><th>Average score</th><th>Mean distance</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <canvas id="map"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const DEFAULT_MAX_DIST = 17502; // Estimated from the map "A Competitive World"
+const DEFAULT_N_SEEDS = 100;
+const WORLD_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json";
+
+const $ = (id) => document.getElementById(id);
+const statusEl = $("status");
+function setStatus(text, isError = false) {
+  statusEl.textContent = text;
+  statusEl.className = isError ? "error" : "";
+}
+
+// Load the basemap in the background; the map is drawn once both it and the results are ready
+const worldPromise = fetch(WORLD_URL).then((r) => r.json()).then((world) => ({
+  land: topojson.feature(world, world.objects.land),
+  borders: topojson.mesh(world, world.objects.countries, (a, b) => a !== b),
+})).catch(() => null);
+
+function parseCoords(text) {
+  const data = JSON.parse(text);
+  const locs = Array.isArray(data) ? data : data.customCoordinates;
+  if (!Array.isArray(locs)) throw new Error("No customCoordinates array found in the file.");
+  const coords = locs
+    .map((l) => [Number(l.lat), Number(l.lng ?? l.lon)])
+    .filter(([lat, lon]) => Number.isFinite(lat) && Number.isFinite(lon));
+  if (coords.length === 0) throw new Error("The file contains no locations with lat/lng.");
+  return coords;
+}
+
+function readPositive(input, fallback, integer) {
+  if (input.value.trim() === "") return fallback;
+  const v = Number(input.value);
+  if (!(v > 0) || (integer && !Number.isInteger(v))) {
+    throw new Error(`${input.id === "maxdist" ? "MAX_DIST" : "n_seeds"} must be a positive ${integer ? "integer" : "number"}.`);
+  }
+  return v;
+}
+
+let worker = null;
+$("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  let coords, maxDist, nSeeds;
+  try {
+    maxDist = readPositive($("maxdist"), DEFAULT_MAX_DIST, false);
+    nSeeds = readPositive($("nseeds"), DEFAULT_N_SEEDS, true);
+    coords = parseCoords(await $("file").files[0].text());
+  } catch (err) {
+    setStatus(err.message, true);
+    return;
+  }
+  if (worker) worker.terminate();
+  worker = new Worker("worker.js");
+  $("results").hidden = true;
+  setStatus(`Running on ${coords.length} coordinates…`);
+  const t0 = performance.now();
+  worker.onmessage = async ({ data }) => {
+    if (data.type === "progress") {
+      setStatus(`Running on ${coords.length} coordinates — ${data.text}`);
+      return;
+    }
+    setStatus(`Ran on ${coords.length} coordinates (MAX_DIST = ${maxDist}, n_seeds = ${nSeeds}) in ${((performance.now() - t0) / 1000).toFixed(1)} s.`);
+    showResults(data);
+    drawMap(coords, data, await worldPromise);
+  };
+  worker.onerror = (err) => setStatus(`Error: ${err.message}`, true);
+  worker.postMessage({ coords, maxDist, nSeeds });
+});
+
+const MARKERS = [
+  { key: "hedge", label: "Best Hedge", color: "blue" },
+  { key: "centroid", label: "Centroid", color: "orange" },
+  { key: "avgPoint", label: "Min Sum of Dists", color: "green" },
+];
+
+function showResults(res) {
+  $("rows").innerHTML = MARKERS.map(({ key, label, color }) => {
+    const { latlon: [lat, lon], score, meanDist } = res[key];
+    return `<tr><th><span class="swatch" style="background:${color}"></span>${label}</th>
+      <td class="num">${lat.toFixed(6)}</td><td class="num">${lon.toFixed(6)}</td>
+      <td class="num">${score.toFixed(4)}</td><td class="num">${meanDist.toFixed(1)} km</td></tr>`;
+  }).join("");
+  $("results").hidden = false;
+}
+
+// Equirectangular (Plate Carrée) map zoomed to the data, like the matplotlib/cartopy plot
+function drawMap(coords, res, world) {
+  const canvas = $("map");
+  const pts = coords.map(([lat, lon]) => [lon, lat]);
+  const markers = MARKERS.map((m) => ({ ...m, pt: [res[m.key].latlon[1], res[m.key].latlon[0]] }));
+
+  // Centre on the best hedge's longitude so regions spanning the antimeridian stay contiguous
+  const projection = d3.geoEquirectangular().rotate([-markers[0].pt[0], 0]).scale(1).translate([0, 0]);
+  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const p of pts.concat(markers.map((m) => m.pt))) {
+    const [x, y] = projection(p);
+    x0 = Math.min(x0, x); x1 = Math.max(x1, x);
+    y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+  }
+  const minSpan = 0.02; // radians, so a single location still gives a sensible view
+  if (x1 - x0 < minSpan) { const c = (x0 + x1) / 2; x0 = c - minSpan / 2; x1 = c + minSpan / 2; }
+  if (y1 - y0 < minSpan) { const c = (y0 + y1) / 2; y0 = c - minSpan / 2; y1 = c + minSpan / 2; }
+  const mx = 0.05 * (x1 - x0), my = 0.10 * (y1 - y0);
+  x0 -= mx; x1 += mx; y0 -= my; y1 += my;
+
+  const maxW = Math.min(900, canvas.parentElement.clientWidth || 900), maxH = 650;
+  const s = Math.min(maxW / (x1 - x0), maxH / (y1 - y0));
+  const W = Math.round((x1 - x0) * s), H = Math.round((y1 - y0) * s);
+  projection.scale(s).translate([-x0 * s, -y0 * s]).clipExtent([[0, 0], [W, H]]);
+
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + "px"; canvas.style.height = H + "px";
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, W, H);
+
+  const path = d3.geoPath(projection, ctx);
+  if (world) {
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "gray"; ctx.beginPath(); path(world.borders); ctx.stroke();
+    ctx.strokeStyle = "black"; ctx.beginPath(); path(world.land); ctx.stroke();
+  } else {
+    setStatus(statusEl.textContent + " (Could not load the basemap.)");
+  }
+
+  ctx.fillStyle = "pink";
+  for (const p of pts) {
+    const [x, y] = projection(p);
+    ctx.fillRect(x - 0.75, y - 0.75, 1.5, 1.5);
+  }
+
+  ctx.globalAlpha = 0.6;
+  for (const { pt, color } of markers) {
+    const [x, y] = projection(pt);
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+</script>
+</body>
+</html>
