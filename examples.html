@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Examples – Hedge Calculator</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1.5rem; }
+  .card { min-width: 0; }
+  .card img { max-width: 100%; height: auto; display: block; }
+  .card table { margin-bottom: .6rem; }
+  .meta { color: #666; font-size: .9rem; margin: 0 0 .4rem; }
+  h2.group { font-size: 1.3rem; border-bottom: 1px solid #ddd; padding-bottom: .2rem; margin-top: 3rem; }
+</style>
+</head>
+<body>
+<nav><a href="./">Calculator</a><a href="docs.html">Docs</a><a href="examples.html" aria-current="page">Examples</a></nav>
+<h1>Examples</h1>
+<p>Each country has two maps - the first is randomly generated with no constraints, and the second applied aggressive pruning for a more balanced location distribution.</p>
+<p><strong>Countries:</strong> <a href="#colombia">Colombia</a>, <a href="#greece">Greece</a>, <a href="#india">India</a>, <a href="#indonesia">Indonesia</a>, <a href="#italy">Italy</a>, <a href="#japan">Japan</a>, <a href="#kazakhstan">Kazakhstan</a>, <a href="#mongolia">Mongolia</a>, <a href="#philippines">Philippines</a>, <a href="#south-africa">South Africa</a>, <a href="#thailand">Thailand</a>, <a href="#uk-ireland">UK/Ireland</a>, <a href="#vietnam">Vietnam</a><br>
+<strong>Water Hedges:</strong> <a href="#sweden-finland">Sweden/Finland</a>, <a href="#south-italy">South Italy</a>, <a href="#belarus">Belarus</a></p>
+
+<h2 class="group">Countries</h2>
+<section id="colombia">
+<h2>Colombia</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">5000 locations · average score at best hedge: 4294.6</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">5.520944, -74.470887</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">5.956981, -74.619606</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">5.596521, -74.497725</td></tr></table>
+  <a href="examples/colombia.png"><img src="examples/colombia.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">1703 locations · average score at best hedge: 4255.3</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">5.699217, -74.412247</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">6.058244, -74.525866</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">5.767813, -74.431535</td></tr></table>
+  <a href="examples/colombia-pruned.png"><img src="examples/colombia-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="greece">
+<h2>Greece</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">2000 locations · average score at best hedge: 4450.0</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">38.870185, 22.491374</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">38.752461, 22.961996</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">38.851343, 22.545165</td></tr></table>
+  <a href="examples/greece.png"><img src="examples/greece.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">694 locations · average score at best hedge: 4449.5</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">38.919780, 22.564767</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">38.809840, 23.037601</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">38.903118, 22.615104</td></tr></table>
+  <a href="examples/greece-pruned.png"><img src="examples/greece-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="india">
+<h2>India</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">10000 locations · average score at best hedge: 3364.9</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">22.617576, 78.032171</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">21.985032, 78.774412</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">22.363117, 78.298934</td></tr></table>
+  <a href="examples/india.png"><img src="examples/india.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">3132 locations · average score at best hedge: 3378.1</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">22.279713, 78.332091</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">21.913565, 78.943433</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">22.142122, 78.545836</td></tr></table>
+  <a href="examples/india-pruned.png"><img src="examples/india-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="indonesia">
+<h2>Indonesia</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">10000 locations · average score at best hedge: 3362.9</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">-6.569823, 110.111567</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">-4.252681, 110.318672</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">-5.927609, 110.020597</td></tr></table>
+  <a href="examples/indonesia.png"><img src="examples/indonesia.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">3041 locations · average score at best hedge: 3145.2</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">-5.120707, 109.755886</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">-3.442381, 110.731495</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">-4.412106, 110.198947</td></tr></table>
+  <a href="examples/indonesia-pruned.png"><img src="examples/indonesia-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="italy">
+<h2>Italy</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">5415 locations · average score at best hedge: 4165.5</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">43.205727, 12.044273</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">42.617391, 12.313611</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">43.069180, 12.142042</td></tr></table>
+  <a href="examples/italy.png"><img src="examples/italy.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">2220 locations · average score at best hedge: 4152.3</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">43.095776, 12.111625</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">42.559098, 12.335447</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">42.972104, 12.192102</td></tr></table>
+  <a href="examples/italy-pruned.png"><img src="examples/italy-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="japan">
+<h2>Japan</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">5000 locations · average score at best hedge: 3938.1</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">35.901068, 137.035256</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">36.614231, 136.884413</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">36.033553, 137.052924</td></tr></table>
+  <a href="examples/japan.png"><img src="examples/japan.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">1712 locations · average score at best hedge: 3881.3</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">36.074343, 137.125490</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">36.919235, 137.030616</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">36.235421, 137.167940</td></tr></table>
+  <a href="examples/japan-pruned.png"><img src="examples/japan-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="kazakhstan">
+<h2>Kazakhstan</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">1000 locations · average score at best hedge: 3385.3</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">50.116987, 71.372233</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">48.999107, 68.288133</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">49.744578, 70.118930</td></tr></table>
+  <a href="examples/kazakhstan.png"><img src="examples/kazakhstan.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">454 locations · average score at best hedge: 3352.5</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">50.245216, 70.475329</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">49.069967, 67.677775</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">49.840498, 69.200999</td></tr></table>
+  <a href="examples/kazakhstan-pruned.png"><img src="examples/kazakhstan-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="mongolia">
+<h2>Mongolia</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">1000 locations · average score at best hedge: 3770.5</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">47.749117, 105.376888</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">47.839357, 103.628609</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">47.754958, 104.696841</td></tr></table>
+  <a href="examples/mongolia.png"><img src="examples/mongolia.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">324 locations · average score at best hedge: 3722.8</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">47.806514, 103.726808</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">47.933568, 103.051510</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">47.836837, 103.458344</td></tr></table>
+  <a href="examples/mongolia-pruned.png"><img src="examples/mongolia-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="philippines">
+<h2>Philippines</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">10000 locations · average score at best hedge: 4038.5</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">11.673375, 122.900237</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">12.073954, 122.739277</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">11.836118, 122.844559</td></tr></table>
+  <a href="examples/philippines.png"><img src="examples/philippines.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">3365 locations · average score at best hedge: 4025.9</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">11.419387, 123.070972</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">11.878404, 122.844522</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">11.556423, 123.012016</td></tr></table>
+  <a href="examples/philippines-pruned.png"><img src="examples/philippines-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="south-africa">
+<h2>South Africa</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">5000 locations · average score at best hedge: 3978.5</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">-27.801997, 27.344575</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">-28.523694, 26.643564</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">-28.002206, 27.168593</td></tr></table>
+  <a href="examples/south-africa.png"><img src="examples/south-africa.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">1774 locations · average score at best hedge: 3918.3</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">-28.430524, 26.572999</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">-28.753691, 26.150105</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">-28.534963, 26.452655</td></tr></table>
+  <a href="examples/south-africa-pruned.png"><img src="examples/south-africa-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="thailand">
+<h2>Thailand</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">5000 locations · average score at best hedge: 4151.4</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">15.241545, 101.646026</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">14.611419, 101.425437</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">15.129878, 101.590545</td></tr></table>
+  <a href="examples/thailand.png"><img src="examples/thailand.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">1882 locations · average score at best hedge: 4125.5</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">15.370979, 101.521930</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">14.690918, 101.286126</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">15.251412, 101.470201</td></tr></table>
+  <a href="examples/thailand-pruned.png"><img src="examples/thailand-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="uk-ireland">
+<h2>UK/Ireland</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">5000 locations · average score at best hedge: 4300.1</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">53.094723, -3.376648</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">53.351221, -3.924506</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">53.142205, -3.498533</td></tr></table>
+  <a href="examples/uk-ireland.png"><img src="examples/uk-ireland.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">1559 locations · average score at best hedge: 4273.9</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">53.383925, -3.534052</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">53.629531, -3.977870</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">53.440418, -3.642447</td></tr></table>
+  <a href="examples/uk-ireland-pruned.png"><img src="examples/uk-ireland-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="vietnam">
+<h2>Vietnam</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">5000 locations · average score at best hedge: 3763.9</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">15.181089, 107.184839</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">15.922729, 106.522810</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">15.834608, 106.916981</td></tr></table>
+  <a href="examples/vietnam.png"><img src="examples/vietnam.png" alt="Random" loading="lazy"></a>
+</div>
+<div class="card">
+  <h3>Pruned</h3>
+  <p class="meta">1759 locations · average score at best hedge: 3767.9</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">14.745304, 107.354952</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">15.984580, 106.511538</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">15.642404, 107.001203</td></tr></table>
+  <a href="examples/vietnam-pruned.png"><img src="examples/vietnam-pruned.png" alt="Pruned" loading="lazy"></a>
+</div>
+</div>
+</section>
+
+<h2 class="group">Water Hedges</h2>
+<section id="sweden-finland">
+<h2>Sweden/Finland</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">8800 locations · average score at best hedge: 3969.8</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">61.774834, 21.499580</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">61.443358, 20.034243</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">61.643994, 20.967142</td></tr></table>
+  <a href="examples/sweden-finland.png"><img src="examples/sweden-finland.png" alt="Random" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="south-italy">
+<h2>South Italy</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">2500 locations · average score at best hedge: 4359.6</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">40.564536, 14.997974</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">40.076352, 14.212855</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">40.501588, 14.911244</td></tr></table>
+  <a href="examples/south-italy.png"><img src="examples/south-italy.png" alt="Random" loading="lazy"></a>
+</div>
+</div>
+</section>
+<section id="belarus">
+<h2>Belarus</h2>
+<div class="pair">
+<div class="card">
+  <h3>Random</h3>
+  <p class="meta">6000 locations · average score at best hedge: 3815.7</p>
+  <table><tr><th><span class="swatch" style="background:blue"></span>Best Hedge</th><td class="num">55.015552, 25.623046</td></tr><tr><th><span class="swatch" style="background:orange"></span>Centroid</th><td class="num">53.257304, 27.508905</td></tr><tr><th><span class="swatch" style="background:green"></span>Min Sum of Dists</th><td class="num">54.134512, 26.424209</td></tr></table>
+  <a href="examples/belarus.png"><img src="examples/belarus.png" alt="Random" loading="lazy"></a>
+</div>
+</div>
+</section>
+</body>
+</html>

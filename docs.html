@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs – Hedge Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav><a href="./">Calculator</a><a href="docs.html" aria-current="page">Docs</a><a href="examples.html">Examples</a></nav>
+<h1>Docs</h1>
+
+<h2>What do these maps show?</h2>
+<p>The purpose of this tool is to find out the best places to hedge in a Geoguessr round.
+  That is, suppose I know the country (from infrastructure clues, language, whatever) and have absolutely zero clue of anything else.
+  Where should I click to maximize my average score?</p>
+<p>There are three points given:</p>
+<table>
+  <tr><th><span class="swatch" style="background:blue"></span>"Best Hedge"</th><td>maximizes your average score on the locations.</td></tr>
+  <tr><th><span class="swatch" style="background:green"></span>"Min sum of dists"</th><td>minimizes the average distance to the location.</td></tr>
+  <tr><th><span class="swatch" style="background:orange"></span>"Centroid"</th><td>minimizes the average squared-distance to the location.</td></tr>
+</table>
+
+<h2>How are the maps calculated?</h2>
+<p>I wrote a program in Python which takes a list of locations (e.g., all of the Philippines locs that appear on the map),
+  and returns the coordinates that maximize the average score (the "best" hedge for the Philippines on that map).</p>
+<p>The problem is that for most maps, the locations themselves aren't public — oftentimes map makers publish the number of locations per country, but that's it.
+  In that sense the goal is hopeless; for example, if the map maker decided to put a disproportionate number of locations in Mindanao,
+  the optimal guess would be further south, but I would have no way of knowing!</p>
+<p>As a proxy, I used a <a href="https://map-g3nerator.vercel.app/">Geoguessr mapmaking tool</a> to generate a couple thousand locations from each country,
+  and used those as an input to the algorithm.</p>
+
+<h2>How useful is this really?</h2>
+<p>This is a pretty small optimization; the change in expected value is not so high that it's likely to make a notable difference in your gameplay.</p>
+<p>The maps are the most useful for regions where the Google street view coverage is uneven, so your intuitive "middle click" might not match the actual optimal.</p>
+<p>You can also in theory use the program for subdivisions and other metas.
+  If you have a JSON file of locations with, e.g. a particular type of antenna, you can figure out a central place to click when you see it (in the absence of other clues).</p>
+</body>
+</html>

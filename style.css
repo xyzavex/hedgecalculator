@@ -1,0 +1,12 @@
+body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 1rem; color: #222; line-height: 1.45; }
+h1 { font-size: 1.4rem; }
+h2 { font-size: 1.2rem; margin-top: 2rem; }
+h3 { font-size: 1rem; margin: .5rem 0; }
+nav { display: flex; gap: 1.2rem; padding-bottom: .6rem; border-bottom: 1px solid #ddd; }
+nav a { color: #1155cc; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+nav a[aria-current] { color: #222; font-weight: 600; }
+table { border-collapse: collapse; margin-bottom: 1rem; }
+th, td { border: 1px solid #ccc; padding: .3rem .7rem; text-align: left; }
+td.num { font-variant-numeric: tabular-nums; }
+.swatch { display: inline-block; width: .8em; height: .8em; border-radius: 50%; margin-right: .4em; opacity: .6; vertical-align: -1px; }

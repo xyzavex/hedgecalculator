@@ -4,33 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hedge Calculator</title>
+<link rel="stylesheet" href="style.css">
 <style>
-  body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 1rem; color: #222; }
-  h1 { font-size: 1.4rem; }
   form { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1rem; align-items: center; max-width: 520px; }
   form button { grid-column: 1 / -1; justify-self: start; padding: .4rem 1.2rem; }
   input[type=number] { width: 8rem; }
   .hint { color: #666; font-size: .85rem; }
   #status { margin: 1rem 0; min-height: 1.2em; }
   #status.error { color: #b00020; }
-  table { border-collapse: collapse; margin-bottom: 1rem; }
-  th, td { border: 1px solid #ccc; padding: .3rem .7rem; text-align: left; }
-  td.num { font-variant-numeric: tabular-nums; }
-  .swatch { display: inline-block; width: .8em; height: .8em; border-radius: 50%; margin-right: .4em; opacity: .6; vertical-align: -1px; }
   #map { max-width: 100%; border: 1px solid #000; display: block; }
 </style>
 </head>
 <body>
+<nav><a href="./" aria-current="page">Calculator</a><a href="docs.html">Docs</a><a href="examples.html">Examples</a></nav>
 <h1>Hedge Calculator</h1>
 <p>Calculates the best hedge (in terms of average score) for a set of locations in GeoGuessr.
-  Upload a map JSON exported by the community tools (the <code>customCoordinates</code> format).
+  Upload a map JSON with the locations.
   Everything runs in your browser; the file is not uploaded anywhere.</p>
 
 <form id="form">
   <label for="file">Locations JSON</label>
   <input type="file" id="file" accept=".json,application/json" required>
   <label for="maxdist">MAX_DIST (km)</label>
-  <span><input type="number" id="maxdist" min="1" step="any" placeholder="17502"> <span class="hint">default 17502</span></span>
+  <span><input type="number" id="maxdist" min="1" step="any" placeholder="17502"> <span class="hint">default 17502 (world map)</span></span>
   <label for="nseeds">n_seeds</label>
   <span><input type="number" id="nseeds" min="1" step="1" placeholder="100"> <span class="hint">default 100</span></span>
   <button type="submit" id="run">Run</button>
